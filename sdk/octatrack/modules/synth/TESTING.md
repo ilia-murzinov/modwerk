@@ -2,7 +2,11 @@
 
 ## 0.1.6 migration trial
 
-The package built against the private 1.40C stock image on 28 November 2026: module `e8c3e4fa`, 28,076 bytes, 45 event hooks and two remaining stock-code sites. The revised base event generator passed its own check and `sdk.tests.test_hook_coverage`. A provisional package on the earlier development twin caused the USB trial to end with an unconfirmed commit and a unit restart. That trial does **not** prove the cause or any FM behavior. A corrected base and package are being tested. Until a unit trial completes, STOP release, notes outside 72–96, LFO depth, and Part switching are unverified on this revision.
+The package built against the private 1.40C stock image on 28 November 2026: module `e8c3e4fa`, 28,076 bytes, 45 event hooks and two remaining stock-code sites. The revised base event generator passed its own check and `sdk.tests.test_hook_coverage`. `machine-recipes.json` for synth was recaptured (`imageSha256` `b0f7a4d392acb0ea…`, 38 stock-copy records aligned with `build.py --capture-stock-recipe`).
+
+A `device try` on the FM-hooks development twin (`da4a1fb69662a6b9…`) with `/private/tmp/synth-0.1.6-hooks.mwrm` ended during commit: USB I/O error, diagnostic **2276/2277**, vector 3, PC **`0x40d9159c`**, twin rolled back to the saved base. Offline review: the three new call subscriptions (`mw_fm_transport_stop`, `mw_midi_chromatic_on_gate`, `mw_midi_chromatic_off_gate`) do not need `records` glue entries (take handlers use `mw_take_*`; call handlers link as direct symbols). `build.replaced` already drops STOP and chromatic detours from the installed image when the port lists `replaces`; keeping them in `manifest.py` is required for the replace check. The crash PC did not resolve in the dev twin `symbols.json` export (nearest label `pool` at `0x40d00000`); treat the fault as loader commit until a symbols map or emulator run pins the function.
+
+Until a unit trial completes after power-cycle and a fresh RAM boot, STOP release, notes outside 72–96, LFO depth, and Part switching are unverified on this revision. Retry package: `/private/tmp/synth-0.1.6-hooks-fix.mwrm` (same size and hook count, rebuilt 28 November 2026).
 
 
 0.1.5 began as two drafts, #1928 (the sequencer clock read once a frame through the base's `ev_audio_frame_prepare`, and
