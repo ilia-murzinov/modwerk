@@ -139,7 +139,8 @@
         .global po_mon, po_moff, po_mgate, po_mogate, po_mrec, po_mtrig
         .global po_ampstage, po_ampdraw1, po_ampdraw2, po_ampdraw3, po_ampedit, po_amplane
         .global po_assign, po_machwin, po_machlist, po_loadsel, po_stop, po_kill
-        .global po_retrig
+        .global po_retrig, po_rel, po_octave
+        .global mw_fm_transport_stop, mw_midi_chromatic_on_gate, mw_midi_chromatic_off_gate
         .set    VOICE_BASE, 0x800049d8
         .set    VOICE_STRIDE, 0xa8
         .set    CURSOR, 0x80001c80
@@ -4391,6 +4392,12 @@ po_retrig_out:
 | next START is cold. d0 is dead here (reloaded at 0x4000b2ce); a0 / d1 saved.
 po_stop:
         clr.l   GLOBAL_WORD              | displaced
+        bsr     po_stop_release
+        jmp     0x4000b2ce
+mw_fm_transport_stop:
+        bsr     po_stop_release
+        rts
+po_stop_release:
         lea     -16(%sp),%sp
         movem.l %d1/%d2/%a0/%a1,(%sp)
         lea     sy_state(%pc),%a0
@@ -4417,7 +4424,81 @@ po_stop_v1:
         bne     po_stop_t
         movem.l (%sp),%d1/%d2/%a0/%a1
         lea     16(%sp),%sp
-        jmp     0x4000b2ce
+        rts
+
+mw_midi_chromatic_on_gate:
+        mvz.b   (%a3),%d0
+        cmpi.l  #72,%d0
+        bcs     1f
+        cmpi.l  #96,%d0
+        bls     9f
+1:
+        lea     -8(%sp),%sp
+        move.l  %d2,(%sp)
+        movea.l 12(%sp),%a0
+        move.l  %a0,4(%sp)
+        moveq   #0,%d1
+        btst    #8,%d3
+        beq     2f
+        mvz.b   0x80000000,%d2
+        bsr     po_is_synth
+        beq     8f
+        bset    #8,%d1
+        bra     8f
+2:
+        moveq   #7,%d2
+3:
+        btst    %d2,%d3
+        beq     4f
+        bsr     po_is_synth
+        beq     4f
+        bset    %d2,%d1
+4:
+        subq.l  #1,%d2
+        bpl     3b
+8:
+        movea.l 4(%sp),%a0
+        or.l    %d1,(%a0)
+        move.l  (%sp),%d2
+        lea     8(%sp),%sp
+9:
+        rts
+mw_midi_chromatic_off_gate:
+        cmpi.l  #72,%d2
+        bcs     1f
+        cmpi.l  #96,%d2
+        bls     9f
+1:
+        lea     -8(%sp),%sp
+        move.l  %d2,(%sp)
+        movea.l 12(%sp),%a0
+        move.l  %a0,4(%sp)
+        moveq   #0,%d1
+        btst    #8,%d4
+        beq     2f
+        mvz.b   0x80000000,%d2
+        bsr     po_is_synth
+        beq     8f
+        bset    #8,%d1
+        bra     8f
+2:
+        moveq   #7,%d2
+3:
+        btst    %d2,%d4
+        beq     4f
+        bsr     po_is_synth
+        beq     4f
+        bset    %d2,%d1
+4:
+        subq.l  #1,%d2
+        bpl     3b
+8:
+        movea.l 4(%sp),%a0
+        or.l    %d1,(%a0)
+        move.l  (%sp),%d2
+        lea     8(%sp),%sp
+9:
+        rts
 
 | ---- po_kill: 0x4000685c, the stock VOICE KILL 0x40006820(t)'s CF voice-byte
 | clear `clrb %d0; moveb %d0,%a1@(0,%a0:l)` (6 bytes; BUILD 33). The kill's
@@ -5026,6 +5107,7 @@ po_ampdraw3:
 | audio track (po_amp_kind, not the master track): po_legknob.
 po_ampedit:
         addi.l  #AMP_P,%d0               | displaced
+        nop                               | keep this handler distinct from the base-owned stock site
         movea.l %d0,%a1
         movea.l 0x12a(%a1),%a0
         cmpi.l  #11,%d2

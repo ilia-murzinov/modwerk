@@ -3,7 +3,7 @@
   "id": "synth",
   "key": "SYNTH MACHINE",
   "name": "FM Synth",
-  "version": "0.1.5-experimental",
+  "version": "0.1.6-experimental",
   "category": "machines",
   "source": {
     "repository": "https://github.com/sambanks/octabam",
@@ -24,7 +24,7 @@
     "label": "Two-operator FM",
     "family": "Synth machines",
     "summary": "Two-operator FM with a dedicated track machine, one to four voices, chords and glide.",
-    "overview": "FM SYNTH plays one to four paraphonic voices through the track's AMP and effects. Version 0.1.5 rests while nothing in the project uses it.",
+    "overview": "FM SYNTH plays one to four paraphonic voices through the track's AMP and effects. Version 0.1.6 moves STOP and MIDI chromatic gates to shared base events; unit qualification is pending.",
     "highlights": [
       "Dedicated machine chooser entry; no sample required.",
       "Pitch, ratio, index, fine tuning, feedback and index decay on SRC.",

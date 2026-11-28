@@ -234,7 +234,7 @@
     "sdk/octabam/modules/synth/upstream/quantizer/scale.s": "82242c407847ac61a6f60fe15bdc5b0b4fc852bac82c39745b5c838ec9389c64",
     "sdk/octabam/modules/synth/upstream/synth/manifest.py": "786154c440d71f372abb49f527d345d5d6d74e96959a4af2f3ce248683753314",
     "sdk/octabam/modules/synth/upstream/synth/page.s": "25e2a0624fcc30ee3a8db5966954113119fb5942855042f765e664a2f8544a70",
-    "sdk/octabam/modules/synth/upstream/synth/poly.s": "db3cd8b0ca3dad25aebc1463c49e7a76dcef1cc34d00a965bc2fb7ac9006cfed"
+    "sdk/octabam/modules/synth/upstream/synth/poly.s": "7bf8c8accc34c3b5c5932f5f7390d5e4a65b3702acab07b8ec3e11e66c4884cb"
    },
    "subscribe": [
     {

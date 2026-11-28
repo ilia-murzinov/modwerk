@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.1.6-experimental",
+    "date": "2026-11-28",
+    "changes": [
+      "Moves STOP and MIDI chromatic octave handling to shared base events so the engine can coexist with other modules using those sites.",
+      "Releases FM voices on STOP and contributes only FM tracks to the wide MIDI chromatic path for notes outside 72–96.",
+      "Requires the base with the new event hooks from Modwerk PR #2352. Hardware qualification is pending."
+    ]
+  },
+  {
     "version": "0.1.5-experimental",
     "date": "2026-11-22",
     "changes": [

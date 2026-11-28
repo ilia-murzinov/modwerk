@@ -1,4 +1,9 @@
-# FM Synth 0.1.5 experimental
+# FM Synth 0.1.6 experimental
+
+## 0.1.6 migration trial
+
+The package built against the private 1.40C stock image on 28 November 2026: module `e8c3e4fa`, 28,076 bytes, 45 event hooks and two remaining stock-code sites. The revised base event generator passed its own check and `sdk.tests.test_hook_coverage`. A provisional package on the earlier development twin caused the USB trial to end with an unconfirmed commit and a unit restart. That trial does **not** prove the cause or any FM behavior. A corrected base and package are being tested. Until a unit trial completes, STOP release, notes outside 72–96, LFO depth, and Part switching are unverified on this revision.
+
 
 0.1.5 began as two drafts, #1928 (the sequencer clock read once a frame through the base's `ev_audio_frame_prepare`, and
 the LFO pass left to stock between notes) and #1974 (FM Synth rests while nothing in the project uses it), combined on
